@@ -11,7 +11,8 @@ Deploy
 gcloud run deploy {serviceName} \
 --image gcr.io/{containerName} \
 --allow-unauthenticated
-```
+```  
+The `--allow-unauthenticated` flag in the deploy command ensures us can access the URL without passing an authentication header.
 
 Deploying a new version  
 ```text
@@ -26,6 +27,11 @@ Every revision has an immutable copy of the service configuration:
 4. Resource limits: CPU and memory allocation.  
 5. Scaling boundaries: minimum and maximum instances.  
 6. Platform configuration: service identity and attached resources (network, database).
+
+We can list the revisions Cloud Run has created with this command  
+```text
+gcloud run revisions list --service {serviceName}
+```
 
 ![revision configuration](https://github.com/bluething/learn-googlecloudrun/blob/main/Building%20Serverless%20Applications%20with%20Google%20Cloud%20Run/images/revisionconfiguration.png?raw=true)
 
@@ -69,7 +75,7 @@ It happens when:
 2. Scaling up.  
 3. Our service doesn't receive traffic for a while.
 
-We can set minimum instances that tells the autoscaler to always keep a certain number of containers ready.
+We can _set minimum instances_ that tells the autoscaler to always keep a certain number of containers ready.
 
 Disposable is container state when:  
 1. Reboot.  
