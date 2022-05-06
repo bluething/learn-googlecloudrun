@@ -149,8 +149,25 @@ For Java, we can use [Jib](https://github.com/GoogleContainerTools/jib). If we a
 
 Another tools are [Cloud Native Buildpacks](https://buildpacks.io/). Buildpacks turn source code into a container image, just like Jib. The difference is that Buildpacks are standardized—anyone can create a Buildpack to turn any source code into a container image.
 
+#### Cloud Build
+
 Google Cloud also offers a service to build container images remotely on Google Cloud: Cloud Build.  
 Enable Cloud Build on our project  
 ```text
 gcloud services enable cloudbuild.googleapis.com
 ```  
+Inside our repository  
+```text
+PROJECT=$(gcloud config get-value project)
+REPO=asia-southeast1-docker.pkg.dev/$PROJECT/cloud-run-book
+
+gcloud builds submit --tag $REPO/hello-cloud-build
+```  
+This command first sends our local directory to Cloud Build, and then executes docker build using a virtual machine on Google Cloud. The resulting container image is then sent to Container Registry. We can deploy with  
+```text
+gcloud run deploy hello-cloud-build \
+  --image $REPO/hello-cloud-build \
+  --allow-unauthenticated
+```
+
+![cloud build](https://github.com/bluething/learn-googlecloudrun/blob/main/Building%20Serverless%20Applications%20with%20Google%20Cloud%20Run/images/cloudbuild.png?raw=true)
